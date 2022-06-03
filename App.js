@@ -1,11 +1,14 @@
-import * as React from 'react'
-import MainContainer from './navigation/MainContainer'
-import SettingContainer from './navigation/SettingContainer'
+import * as React from "react";
+import MainContainer from "./navigation/components/MainContainer";
+import SettingContainer from "./navigation/components/SettingContainer";
+import { AuthProvider } from "./navigation/logins/AuthContext";
 
-function App(){
-  return(
-      <SettingContainer/>
-  )
+function App() {
+  return (
+    <AuthProvider>
+      <SettingContainer />
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

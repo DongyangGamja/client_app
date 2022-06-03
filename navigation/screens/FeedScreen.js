@@ -1,26 +1,23 @@
-import * as React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import * as React from "react";
+import { Text, View, StyleSheet } from "react-native";
 
-export default function FeedScreen( {navigation} ){
-    return(
-        <View style={styles.container}>
-            <Text 
-                style={styles.text}
-                onPress={() => navigation.navigate('Home')}
-                >
-                    This is GAMJA's Feed Screen!
-            </Text>
-        </View>
-    )
+export default function FeedScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text} onPress={() => navigation.navigate("Home")}>
+        This is GAMJA's Feed Screen!
+      </Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text:{
-        fontSize: 26,
-    }
-})
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    fontSize: 26,
+  },
+});
