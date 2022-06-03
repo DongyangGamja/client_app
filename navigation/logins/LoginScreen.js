@@ -80,7 +80,8 @@ export default function LoginScreen({ navigation }) {
             }}
             onPress={() => {
               if (userId === "" || userPw === "") {
-                setModalVisible(true);
+                navigation.navigate("Main");
+                //setModalVisible(true);
               } else {
                 login(userId, userPw);
               }

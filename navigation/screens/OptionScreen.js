@@ -1,12 +1,16 @@
-import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { useContext } from "react";
+import { Text, View, StyleSheet, Button } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay/lib";
+import { AuthContext } from "../logins/AuthContext";
 
 export default function OptionScreen({ navigation }) {
+  const { userInfo, logout, isLoading } = useContext(AuthContext);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text} onPress={() => navigation.navigate("Home")}>
-        This is GAMJA's Option Screen!
-      </Text>
+      <Spinner visible={isLoading} />
+      <Text>Welcome</Text>
+      <Button title="Logout" color="red" onPress={logout} />
     </View>
   );
 }

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import {} from "react/cjs/react.production.min";
 
 import baseURL from "./config";
 
@@ -9,6 +10,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [splashLoading, setSplashLoading] = useState(false);
 
   const register = (name, email, password) => {
     setIsLoading(true);
@@ -52,11 +54,55 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const logout = () => {
+    setIsLoading(true);
+
+    axios
+      .post(
+        `${baseURL}/logout`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${userInfo.access_token}` },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        AsyncStorage.setItem("userInfo");
+        setUserInfo({});
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`logout error : ${e}`);
+        setIsLoading(false);
+      });
+  };
+
+  const isLoggedIn = async () => {
+    try {
+      setSplashLoading(true);
+      let userInfo = await AsyncStorage.getItem("userInfo");
+      userInfo = JSON.parse(userInfo);
+      if (userInfo) {
+        setUserInfo(userInfo);
+      }
+      setSplashLoading(false);
+    } catch (e) {
+      setSplashLoading(false);
+      console.log(`is logged in error ${e}`);
+    }
+  };
+
+  useEffect(() => {
+    isLoggedIn();
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
         register,
         login,
+        logout,
+        splashLoading,
         isLoading,
         userInfo,
       }}
