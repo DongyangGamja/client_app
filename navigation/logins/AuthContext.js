@@ -12,13 +12,13 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
 
-  const register = (name, email, password) => {
+  const register = (name, id, pw) => {
     setIsLoading(true);
     axios
-      .post(`${baseURL}/user/1`, {
+      .post(`${baseURL}/api/auth/register`, {
         name,
-        email,
-        password,
+        id,
+        pw,
       })
       .then((res) => {
         let userInfo = res.data;
@@ -33,13 +33,13 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const login = (email, password) => {
+  const login = (id, pw) => {
     setIsLoading(true);
 
     axios
-      .post(`${baseURL}/user/1`, {
-        email,
-        password,
+      .post(`${baseURL}/api/auth/login`, {
+        id,
+        pw,
       })
       .then((res) => {
         let userInfo = res.data;

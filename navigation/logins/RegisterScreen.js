@@ -65,8 +65,8 @@ export default function RegisterScreen({ navigation }) {
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
+                  register(createUsername, createUserId, createUserPw);
                   setRegisterVisible((current) => !current);
-                  navigation.navigate("Login");
                 }}
               >
                 <Text style={styles.textStyle}>Register</Text>
@@ -131,7 +131,6 @@ export default function RegisterScreen({ navigation }) {
               borderRadius: 12,
             }}
             onPress={() => {
-              register(createUsername, createUserId, createUserPw);
               if (
                 createUserId === "" ||
                 createUserPw === "" ||
@@ -142,7 +141,6 @@ export default function RegisterScreen({ navigation }) {
               } else if (createUserPw !== confirmUserPw) {
                 setModalVisible(true);
               } else {
-                register(createUsername, createUserId, createUserPw);
                 setRegisterVisible(true);
               }
             }}
