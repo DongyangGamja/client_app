@@ -1,3 +1,4 @@
+//스플래시 페이지(감자 로고있는 페이지 X, 감자 로고 스플래시 페이지 이후 잠깐 나오는 초록창)
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
 

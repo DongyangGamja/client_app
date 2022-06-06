@@ -1,3 +1,4 @@
+//바텀 탭 스크린용 컨테이너
 import * as React from "react";
 import { View, Text } from "react-native";
 

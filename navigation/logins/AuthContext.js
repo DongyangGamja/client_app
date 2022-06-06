@@ -1,3 +1,4 @@
+// 서버통신 기능 페이지
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useState, useEffect } from "react";
@@ -12,48 +13,53 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
 
-  const register = (name, id, pw) => {
-    setIsLoading(true);
-    axios
-      .post(`${baseURL}/api/auth/register`, {
-        name,
-        id,
-        pw,
-      })
-      .then((res) => {
-        let userInfo = res.data;
-        setUserInfo(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        setIsLoading(false);
-        console.log(userInfo);
-      })
-      .catch((e) => {
-        console.log(`register error ${e}`);
-        setIsLoading(false);
+  const register = async (name, id, pw) => {
+    try {
+      setIsLoading(true);
+      let res = await fetch(`${baseURL}/api/auth/register`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          id: id,
+          pw: pw,
+        }),
       });
+      res = await res.json();
+      setIsLoading(false);
+      console.log(result);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const login = (id, pw) => {
-    setIsLoading(true);
-
-    axios
-      .post(`${baseURL}/api/auth/login`, {
-        id,
-        pw,
-      })
-      .then((res) => {
-        let userInfo = res.data;
-        console.log(userInfo);
-        setUserInfo(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        console.log(`login error ${e}`);
-        setIsLoading(false);
+  const login = async (id, pw) => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${baseURL}/api/auth/login`, {
+        method: "post",
+        headers: {
+          "Content-Type": "text/xml",
+        },
+        body: JSON.stringify({
+          id: id,
+          pw: pw,
+        }),
       });
+      const result = await res.json();
+      setIsLoading(false);
+      console.log(result);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
+  /*
   const logout = () => {
     setIsLoading(true);
 
@@ -76,6 +82,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       });
   };
+    */
 
   const isLoggedIn = async () => {
     try {

@@ -1,3 +1,4 @@
+//앱 실행 처음 로그인, 회원가입 선택 페이지
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -12,8 +13,6 @@ import { Dimensions } from "react-native";
 import gamjaLogo from "../../assets/LOGO.png";
 
 export default function StartScreen({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(true);
-
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={{ flex: 1.2 }}>

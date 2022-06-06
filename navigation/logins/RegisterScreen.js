@@ -1,3 +1,4 @@
+//회원가입 페이지
 import React, { useEffect, useState, useContext } from "react";
 import {
   View,
