@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
-  /*
+  /* 로그아웃 기능
   const logout = () => {
     setIsLoading(true);
 
@@ -82,6 +82,7 @@ export const AuthProvider = ({ children }) => {
   };
     */
 
+  //로그인 돼있는지 확인, 돼있으면 스플래시에서 바로 메인페이지로 넘어감
   const isLoggedIn = async () => {
     try {
       setSplashLoading(true);
