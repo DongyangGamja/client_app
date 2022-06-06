@@ -107,7 +107,6 @@ export const AuthProvider = ({ children }) => {
       value={{
         register,
         login,
-        logout,
         splashLoading,
         isLoading,
         userInfo,

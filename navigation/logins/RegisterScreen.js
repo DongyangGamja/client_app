@@ -66,7 +66,8 @@ export default function RegisterScreen({ navigation }) {
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  register(createUsername, createUserId, createUserPw);
+                  //register(createUsername, createUserId, createUserPw);
+                  navigation.navigate("Login");
                   setRegisterVisible((current) => !current);
                 }}
               >

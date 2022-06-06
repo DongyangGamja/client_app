@@ -23,6 +23,20 @@ export default function LoginScreen({ navigation }) {
   const [userId, setUserId] = useState("");
 
   const { isLoading, login } = useContext(AuthContext);
+  const loginInfo = [
+    {
+      id: "admin1",
+      pw: "password1",
+    },
+    {
+      id: "admin2",
+      pw: "password2",
+    },
+    {
+      id: "admin3",
+      pw: "password3",
+    },
+  ];
 
   return (
     <ImageBackground
@@ -67,9 +81,7 @@ export default function LoginScreen({ navigation }) {
             }}
             secureTextEntry={true}
             placeholder="Enter your password"
-            onChange={(e) => {
-              setUserPw(e.target.value);
-            }}
+            onChangeText={setUserPw}
           />
           <TouchableOpacity
             style={{
@@ -81,10 +93,27 @@ export default function LoginScreen({ navigation }) {
             }}
             onPress={() => {
               if (userId === "" || userPw === "") {
+                setModalVisible(true);
+              } else if (
+                userId === loginInfo[0].id &&
+                userPw === loginInfo[0].pw
+              ) {
+                //login(userId, userPw);
                 navigation.navigate("Main");
-                //setModalVisible(true);
+              } else if (
+                userId === loginInfo[1].id &&
+                userPw === loginInfo[1].pw
+              ) {
+                //login(userId, userPw);
+                navigation.navigate("Main");
+              } else if (
+                userId === loginInfo[2].id &&
+                userPw === loginInfo[2].pw
+              ) {
+                //login(userId, userPw);
+                navigation.navigate("Main");
               } else {
-                login(userId, userPw);
+                setModalVisible(true);
               }
             }}
           >
