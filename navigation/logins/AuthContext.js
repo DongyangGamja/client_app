@@ -2,7 +2,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useState, useEffect } from "react";
-import {} from "react/cjs/react.production.min";
+import RNFetchBlobFile from "react-native-fetch-blob/class/RNFetchBlobFile";
 
 import baseURL from "./config";
 
@@ -13,49 +13,47 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
 
-  const register = async (name, id, pw) => {
-    try {
-      setIsLoading(true);
-      let res = await fetch(`${baseURL}/api/auth/register`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          id: id,
-          pw: pw,
-        }),
+  const register = (name, id, pw) => {
+    setIsLoading(true)
+    axios
+      .post("http://3.39.32.181:8001/api/auth/register", {
+        name,
+        id,
+        pw,
+      })
+      .then(res => {
+        let userInfo = res.data;
+        console.log(userInfo);
+        setUserInfo(userInfo);
+        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setIsLoading(false);
+        console.log(userInfo);
+      })
+      .catch(e => {
+        console.error(e);
+        setIsLoading(false);
       });
-      res = await res.json();
-      console.log(result);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
-  const login = async (id, pw) => {
-    try {
-      setIsLoading(true);
-      const res = await fetch(`${baseURL}/api/auth/login`, {
-        method: "post",
-        headers: {
-          "Content-Type": "text/xml",
-        },
-        body: JSON.stringify({
-          id: id,
-          pw: pw,
-        }),
+  const login = (id, pw) => {
+    setIsLoading(true)
+    axios
+      .post("http://3.39.32.181:8001/api/auth/login", {
+        id,
+        pw,
+      })
+      .then((res) => {
+        let userInfo = res.data;
+        console.log(userInfo);
+        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setIsLoading(false);
+        setUserInfo(userInfo);
+
+      })
+      .catch((e) => {
+        console.error(e);
+        setIsLoading(false);
       });
-      const result = await res.json();
-      console.log(result);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
   };
   /* 로그아웃 기능
   const logout = () => {

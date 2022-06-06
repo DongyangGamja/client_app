@@ -22,7 +22,7 @@ export default function LoginScreen({ navigation }) {
   const [userPw, setUserPw] = useState("");
   const [userId, setUserId] = useState("");
 
-  const { isLoading, login } = useContext(AuthContext);
+  const { isLoading, login, userInfo } = useContext(AuthContext);
   const loginInfo = [
     {
       id: "admin1",
@@ -45,7 +45,7 @@ export default function LoginScreen({ navigation }) {
       style={{ flex: 1, position: "relative" }}
     >
       <View style={{ flex: 1 }}>
-        <Spinner visible={isLoading} />
+      <Spinner visible={isLoading} />
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -94,26 +94,11 @@ export default function LoginScreen({ navigation }) {
             onPress={() => {
               if (userId === "" || userPw === "") {
                 setModalVisible(true);
-              } else if (
-                userId === loginInfo[0].id &&
-                userPw === loginInfo[0].pw
-              ) {
-                //login(userId, userPw);
-                navigation.navigate("Main");
-              } else if (
-                userId === loginInfo[1].id &&
-                userPw === loginInfo[1].pw
-              ) {
-                //login(userId, userPw);
-                navigation.navigate("Main");
-              } else if (
-                userId === loginInfo[2].id &&
-                userPw === loginInfo[2].pw
-              ) {
-                //login(userId, userPw);
-                navigation.navigate("Main");
               } else {
-                setModalVisible(true);
+                login(userId, userPw);
+                if(userInfo.token){
+                  navigation.navigate("Main");
+                }
               }
             }}
           >
