@@ -28,7 +28,6 @@ export const AuthProvider = ({ children }) => {
         }),
       });
       res = await res.json();
-      setIsLoading(false);
       console.log(result);
     } catch (e) {
       console.error(e);
@@ -51,7 +50,6 @@ export const AuthProvider = ({ children }) => {
         }),
       });
       const result = await res.json();
-      setIsLoading(false);
       console.log(result);
     } catch (e) {
       console.error(e);
