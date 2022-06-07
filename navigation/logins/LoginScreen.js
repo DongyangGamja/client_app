@@ -23,20 +23,6 @@ export default function LoginScreen({ navigation }) {
   const [userId, setUserId] = useState("");
 
   const { isLoading, login, userInfo } = useContext(AuthContext);
-  const loginInfo = [
-    {
-      id: "admin1",
-      pw: "password1",
-    },
-    {
-      id: "admin2",
-      pw: "password2",
-    },
-    {
-      id: "admin3",
-      pw: "password3",
-    },
-  ];
 
   return (
     <ImageBackground
@@ -45,7 +31,7 @@ export default function LoginScreen({ navigation }) {
       style={{ flex: 1, position: "relative" }}
     >
       <View style={{ flex: 1 }}>
-      <Spinner visible={isLoading} />
+        <Spinner visible={isLoading} />
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -96,7 +82,7 @@ export default function LoginScreen({ navigation }) {
                 setModalVisible(true);
               } else {
                 login(userId, userPw);
-                if(userInfo.token){
+                if (userInfo.result) {
                   navigation.navigate("Main");
                 }
               }

@@ -14,14 +14,14 @@ export const AuthProvider = ({ children }) => {
   const [splashLoading, setSplashLoading] = useState(false);
 
   const register = (name, id, pw) => {
-    setIsLoading(true)
+    setIsLoading(true);
     axios
       .post("http://3.39.32.181:8001/api/auth/register", {
         name,
         id,
         pw,
       })
-      .then(res => {
+      .then((res) => {
         let userInfo = res.data;
         console.log(userInfo);
         setUserInfo(userInfo);
@@ -29,14 +29,14 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
         console.log(userInfo);
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         setIsLoading(false);
       });
   };
 
   const login = (id, pw) => {
-    setIsLoading(true)
+    setIsLoading(true);
     axios
       .post("http://3.39.32.181:8001/api/auth/login", {
         id,
@@ -48,13 +48,13 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         setIsLoading(false);
         setUserInfo(userInfo);
-
       })
       .catch((e) => {
         console.error(e);
         setIsLoading(false);
       });
   };
+
   /* 로그아웃 기능
   const logout = () => {
     setIsLoading(true);

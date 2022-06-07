@@ -9,7 +9,6 @@ export default function OptionScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Spinner visible={isLoading} />
-      <Text>Welcome</Text>
       <Button title="Logout" color="red" onPress={logout} />
     </View>
   );
