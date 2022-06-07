@@ -22,7 +22,7 @@ export default function LoginScreen({ navigation }) {
   const [userPw, setUserPw] = useState("");
   const [userId, setUserId] = useState("");
 
-  const { isLoading, login, userInfo } = useContext(AuthContext);
+  const { isLoading, login, userInfo, userLogin } = useContext(AuthContext);
 
   return (
     <ImageBackground
@@ -52,7 +52,7 @@ export default function LoginScreen({ navigation }) {
               height: 48,
               backgroundColor: "white",
               opacity: 0.9,
-              borderRadius: 50,
+              borderRadius: 15,
             }}
             placeholder="Enter your email"
             onChangeText={setUserId}
@@ -63,7 +63,7 @@ export default function LoginScreen({ navigation }) {
               backgroundColor: "white",
               marginTop: 5,
               opacity: 0.9,
-              borderRadius: 50,
+              borderRadius: 15,
             }}
             secureTextEntry={true}
             placeholder="Enter your password"
@@ -75,14 +75,16 @@ export default function LoginScreen({ navigation }) {
               backgroundColor: "orange",
               marginTop: 20,
               paddingVertical: 10,
-              borderRadius: 10,
+              borderRadius: 50,
             }}
             onPress={() => {
               if (userId === "" || userPw === "") {
                 setModalVisible(true);
               } else {
+                console.log("beforeLogin");
                 login(userId, userPw);
-                if (userInfo.result) {
+                console.log("afterLogin");
+                if (userLogin === true) {
                   navigation.navigate("Main");
                 }
               }

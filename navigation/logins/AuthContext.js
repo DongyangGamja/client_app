@@ -9,6 +9,7 @@ import baseURL from "./config";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [userLogin, setUserLogin] = useState();
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
@@ -35,24 +36,30 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const login = (id, pw) => {
+  const login = async (id, pw) => {
     setIsLoading(true);
-    axios
-      .post("http://3.39.32.181:8001/api/auth/login", {
-        id,
-        pw,
-      })
-      .then((res) => {
-        let userInfo = res.data;
-        console.log(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        setIsLoading(false);
-        setUserInfo(userInfo);
-      })
-      .catch((e) => {
-        console.error(e);
-        setIsLoading(false);
-      });
+    try {
+      axios
+        .post("http://3.39.32.181:8001/api/auth/login", {
+          id,
+          pw,
+        })
+        .then(async (res) => {
+          let userInfo = await res.data;
+          AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+          setIsLoading(false);
+          setUserInfo(userInfo);
+          setUserLogin(res.data.result);
+          console.log(res.data.result);
+          console.log(userInfo);
+        })
+        .catch((e) => {
+          console.error(e);
+          setIsLoading(false);
+        });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   /* 로그아웃 기능
@@ -108,6 +115,7 @@ export const AuthProvider = ({ children }) => {
         splashLoading,
         isLoading,
         userInfo,
+        userLogin,
       }}
     >
       {children}

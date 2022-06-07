@@ -88,7 +88,12 @@ export default function RegisterScreen({ navigation }) {
         <View style={{ flex: 2 }}></View>
         <View style={{ flex: 2.5, padding: 25 }}>
           <TextInput
-            style={{ height: 48, backgroundColor: "white", opacity: 0.9 }}
+            style={{
+              height: 48,
+              backgroundColor: "white",
+              opacity: 0.9,
+              borderRadius: 15,
+            }}
             placeholder="Email"
             onChangeText={setCreateUserId}
           />
@@ -98,6 +103,7 @@ export default function RegisterScreen({ navigation }) {
               backgroundColor: "white",
               opacity: 0.9,
               marginTop: 5,
+              borderRadius: 15,
             }}
             placeholder="Password"
             secureTextEntry={true}
@@ -109,6 +115,7 @@ export default function RegisterScreen({ navigation }) {
               backgroundColor: "white",
               opacity: 0.9,
               marginTop: 5,
+              borderRadius: 15,
             }}
             placeholder="Password Confirm"
             secureTextEntry={true}
@@ -120,6 +127,7 @@ export default function RegisterScreen({ navigation }) {
               backgroundColor: "white",
               opacity: 0.9,
               marginTop: 5,
+              borderRadius: 15,
             }}
             placeholder="Username"
             onChangeText={setCreateUsername}
@@ -130,7 +138,7 @@ export default function RegisterScreen({ navigation }) {
               backgroundColor: "orange",
               marginTop: 20,
               paddingVertical: 10,
-              borderRadius: 12,
+              borderRadius: 50,
             }}
             onPress={() => {
               if (
