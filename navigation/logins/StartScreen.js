@@ -7,10 +7,13 @@ import {
   TouchableOpacity,
   ImageBackground,
   StyleSheet,
+  Dimensions,
 } from "react-native";
-import { Dimensions } from "react-native";
 
 import gamjaLogo from "../../assets/LOGO.png";
+
+const window = Dimensions.get("window").width;
+const screen = Dimensions.get("window").height;
 
 export default function StartScreen({ navigation }) {
   return (
@@ -18,15 +21,14 @@ export default function StartScreen({ navigation }) {
       <View style={{ flex: 1.2 }}>
         <ImageBackground
           source={gamjaLogo}
-          resizeMode="center"
+          resizeMode="contain"
           style={{
             flex: 0.2,
             position: "absolute",
-            width: 150,
-            height: 150,
+            width: window / 2,
+            height: (screen + 50) / 2,
+            marginLeft: window / 4,
             backgroundColor: "white",
-            marginTop: 180,
-            marginHorizontal: 130,
           }}
         ></ImageBackground>
       </View>

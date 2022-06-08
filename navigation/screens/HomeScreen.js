@@ -6,7 +6,7 @@ import charGamja_baby_sick from "../../assets/charGamja_baby_sick.png";
 import charGamja_teenager from "../../assets/charGamja_teenager.png";
 
 export default function HomeScreen({ navigation }) {
-  const [gamja, setGamja] = useState(0);
+  const [gamja, setGamja] = useState(1);
   const [gamjaImg, setGamjaImg] = useState(charGamja_baby);
 
   const countGamja = () => {
@@ -16,6 +16,8 @@ export default function HomeScreen({ navigation }) {
     else if (gamja === 2) setGamjaImg(charGamja_teenager);
     if (gamja >= 2) setGamja(0);
   };
+
+  //감자 = 서버로부터 감자 경험치 가져온 후 계산. gamjaExp / 100 = gamjaLevel
 
   return (
     <View style={styles.container}>

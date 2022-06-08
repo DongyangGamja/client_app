@@ -8,14 +8,19 @@ import {
   ImageBackground,
   StyleSheet,
   Modal,
+  Dimensions,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
 import gamjaLogo from "../../assets/LOGO.png";
+import lunchbox from "../../assets/lunchboxImage.jpg";
 import { AuthContext } from "./AuthContext";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+
+const window = Dimensions.get("window").width;
+const screen = Dimensions.get("window").height;
 
 export default function LoginScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -26,9 +31,15 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <ImageBackground
-      source={gamjaLogo}
-      resizeMode="center"
-      style={{ flex: 1, position: "relative" }}
+      source={lunchbox}
+      resizeMode="cover"
+      blurRadius={20}
+      style={{
+        flex: 1,
+        position: "absolute",
+        width: window,
+        height: screen + 50,
+      }}
     >
       <View style={{ flex: 1 }}>
         <Spinner visible={isLoading} />
@@ -50,23 +61,29 @@ export default function LoginScreen({ navigation }) {
           <TextInput
             style={{
               height: 48,
-              backgroundColor: "white",
-              opacity: 0.9,
+              backgroundColor: "black",
+              opacity: 0.4,
               borderRadius: 15,
+              padding: 10,
             }}
+            color="white"
             placeholder="Enter your email"
+            placeholderTextColor="white"
             onChangeText={setUserId}
           />
           <TextInput
             style={{
               height: 48,
-              backgroundColor: "white",
-              marginTop: 5,
-              opacity: 0.9,
+              backgroundColor: "black",
+              marginTop: 10,
+              opacity: 0.4,
               borderRadius: 15,
+              padding: 10,
             }}
+            color="white"
             secureTextEntry={true}
             placeholder="Enter your password"
+            placeholderTextColor="white"
             onChangeText={setUserPw}
           />
           <TouchableOpacity
@@ -79,7 +96,8 @@ export default function LoginScreen({ navigation }) {
             }}
             onPress={() => {
               if (userId === "" || userPw === "") {
-                setModalVisible(true);
+                //setModalVisible(true);
+                navigation.navigate("Main");
               } else {
                 console.log("beforeLogin");
                 login(userId, userPw);
