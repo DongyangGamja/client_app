@@ -56,7 +56,6 @@ export default function OptionScreen({ navigation }) {
           flex: 2,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "tomato",
           width: window,
         }}
       >
@@ -73,7 +72,6 @@ export default function OptionScreen({ navigation }) {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
-            backgroundColor: "yellow",
             width: window,
           }}
         >
@@ -124,7 +122,6 @@ export default function OptionScreen({ navigation }) {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "row",
-          backgroundColor: "salmon",
         }}
       >
         <TouchableOpacity
@@ -154,6 +151,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    padding: 10,
+    padding: 20,
   },
 });

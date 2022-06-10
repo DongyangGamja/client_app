@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import moment from "moment";
+import "moment/locale/ko";
 import { AuthContext } from "../logins/AuthContext";
-import { ProgressChart } from "react-native-chart-kit";
 
 import charGamja_baby from "../../assets/charGamja_baby.jpg";
 import charGamja_baby_sick from "../../assets/charGamja_baby_sick.jpg";
+import charGamja_baby_ssak from "../../assets/charGamja_baby_ssak.jpg";
 import charGamja_teen from "../../assets/charGamja_teen.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -26,13 +28,26 @@ export default function HomeScreen({ navigation }) {
   const [gamjaKind, setGamjaKind] = useState(null);
   const [gamjaKcal, setGamjaKcal] = useState(null);
   const [gamjaDate, setGamjaDate] = useState("");
+  const [gamjaDay, setGamjaDay] = useState("");
+  const [gamjaTime, setGamjaTime] = useState("");
 
   const { kcalInfo, calInfo } = useContext(AuthContext);
 
+  //시간 계산(불러온 날짜 데이터가 오늘보다 이전이면 초기화)
+  useEffect(() => {
+    const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
+    const nowDay = moment().format("YYYY-MM-DD");
+    if (moment(gamjaDay).isAfter(nowDay)) {
+      //초기화
+    }
+    console.log(nowTime);
+  }, []);
+
+  //exp의 양에 따라 그림 변경
   useEffect(() => {
     if (gamjaExp / 100 >= 3) {
       setGamjaImg(charGamja_teen);
-      setGamjaImgName("감자군");
+      setGamjaImgName("청년감자");
     } else if (gamjaExp / 100 >= 1) {
       setGamjaImg(charGamja_baby);
       setGamjaImgName("애기감자");
@@ -42,6 +57,7 @@ export default function HomeScreen({ navigation }) {
     }
   }, [gamjaExp]);
 
+  //스토리지 불러오기
   const kcalDataHandled = async () => {
     try {
       const gamjaInfoString = await AsyncStorage.getItem("@gamja_info");
@@ -51,6 +67,11 @@ export default function HomeScreen({ navigation }) {
       setGamjaKind(gamjaInfo.m_kind);
       setGamjaKcal(gamjaInfo.m_kcal);
       setGamjaDate(gamjaInfo.m_date);
+      //날짜와 시간으로 분리해서 저장, day=날짜, time=시간
+      const gamjaDaySet = gamjaInfo.m_date.substring(0, 10);
+      setGamjaDay(gamjaDaySet);
+      const gamjaTimeSet = gamjaInfo.m_date.substring(11, 19);
+      setGamjaTime(gamjaTimeSet);
     } catch (e) {
       console.error(e);
     }
@@ -122,7 +143,7 @@ export default function HomeScreen({ navigation }) {
                 fontWeight: "bold",
               }}
             >
-              종류: {gamjaKind}
+              음식 종류: {gamjaKind}
             </Text>
             <Text
               style={{
@@ -140,7 +161,7 @@ export default function HomeScreen({ navigation }) {
                 fontWeight: "bold",
               }}
             >
-              날짜: {gamjaDate}
+              생성 날짜: {gamjaDate}
             </Text>
           </View>
           <View
