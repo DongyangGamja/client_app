@@ -24,7 +24,7 @@ export default function StartScreen({ navigation }) {
           resizeMode="contain"
           style={{
             flex: 0.2,
-            position: "absolute",
+            position: "relative",
             width: window / 2,
             height: (screen + 50) / 2,
             marginLeft: window / 4,
@@ -34,21 +34,24 @@ export default function StartScreen({ navigation }) {
       </View>
       <View style={styles.container}>
         <View style={styles.modalView}>
-          <View style={{ alignItems: "flex-start" }}>
-            <Text style={{ fontSize: 40, fontWeight: "bold" }}>Welcome</Text>
-            <Text style={{ fontSize: 22, paddingTop: 20, fontWeight: "bold" }}>
+          <View style={{ alignItems: "flex-start", justifyContent: "center" }}>
+            <Text style={{ fontSize: 45, fontWeight: "bold", padding: 10 }}>
+              Welcome
+            </Text>
+            <Text style={{ fontSize: 22, padding: 10, fontWeight: "bold" }}>
               This is Gamja application for diet lunchbox!
             </Text>
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}></Text>
           </View>
-          <View style={{ flexDirection: "row", marginTop: 50 }}>
+          <View style={{ flexDirection: "row", padding: 20 }}>
             <TouchableOpacity
               style={{
                 backgroundColor: "black",
-                paddingVertical: 15,
-                paddingHorizontal: 30,
-                marginHorizontal: 20,
-                borderRadius: 80,
+                width: window / 2.5,
+                borderRadius: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                height: screen / 14,
+                margin: 15,
               }}
               onPress={() => {
                 navigation.navigate("Login");
@@ -59,10 +62,12 @@ export default function StartScreen({ navigation }) {
             <TouchableOpacity
               style={{
                 backgroundColor: "white",
-                paddingVertical: 15,
-                paddingHorizontal: 30,
-                marginHorizontal: 20,
-                borderRadius: 80,
+                width: window / 2.5,
+                borderRadius: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                height: screen / 14,
+                margin: 15,
               }}
               onPress={() => {
                 navigation.navigate("Register");
@@ -85,7 +90,8 @@ const styles = StyleSheet.create({
     backgroundColor: "orange",
     paddingVertical: 60,
     paddingBottom: 150,
-    borderRadius: 80,
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {

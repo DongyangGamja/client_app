@@ -2,31 +2,26 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useState, useEffect } from "react";
-import RNFetchBlobFile from "react-native-fetch-blob/class/RNFetchBlobFile";
-
-import baseURL from "./config";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [calInfo, setCalInfo] = useState([]);
   const [userLogin, setUserLogin] = useState();
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
 
-  const register = (name, id, pw) => {
-    setIsLoading(true);
+  const register = async (name, id, pw) => {
+    setIsLoading(false);
     axios
       .post("http://3.39.32.181:8001/api/auth/register", {
         name,
         id,
         pw,
       })
-      .then((res) => {
-        let userInfo = res.data;
-        console.log(userInfo);
-        setUserInfo(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      .then(async (res) => {
+        let userInfo = await res.data;
         setIsLoading(false);
         console.log(userInfo);
       })
@@ -46,12 +41,13 @@ export const AuthProvider = ({ children }) => {
         })
         .then(async (res) => {
           let userInfo = await res.data;
-          AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+          if (userInfo.result === true) {
+            AsyncStorage.setItem("@user_Name", res.data.info[0]);
+            AsyncStorage.setItem("@user_Id", res.data.info[1]);
+            setUserInfo(userInfo);
+            setUserLogin(res.data.result);
+          }
           setIsLoading(false);
-          setUserInfo(userInfo);
-          setUserLogin(res.data.result);
-          console.log(res.data.result);
-          console.log(userInfo);
         })
         .catch((e) => {
           console.error(e);
@@ -59,6 +55,7 @@ export const AuthProvider = ({ children }) => {
         });
     } catch (e) {
       console.error(e);
+      setIsLoading(false);
     }
   };
 
@@ -87,10 +84,9 @@ export const AuthProvider = ({ children }) => {
   };
     */
 
-  //로그인 돼있는지 확인, 돼있으면 스플래시에서 바로 메인페이지로 넘어감
+  /* 로그인 돼있는지 확인, 돼있으면 스플래시에서 바로 메인페이지로 넘어감
   const isLoggedIn = async () => {
     try {
-      setSplashLoading(true);
       let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
       if (userInfo) {
@@ -102,18 +98,46 @@ export const AuthProvider = ({ children }) => {
       console.log(`is logged in error ${e}`);
     }
   };
+  */
 
-  useEffect(() => {
-    isLoggedIn();
-  }, []);
+  const kcalInfo = async () => {
+    setIsLoading(true);
+    const userIdInfo = await AsyncStorage.getItem("@user_Id");
+    axios
+      .get("http://3.39.32.181:8001/api/gamja/all/" + userIdInfo)
+      .then(async (res) => {
+        const calInfo = await res.data;
+        await AsyncStorage.setItem(
+          "@gamja_info",
+          JSON.stringify(calInfo.data[0])
+        );
+        await AsyncStorage.setItem(
+          "@gamja_info1",
+          JSON.stringify(calInfo.data[1])
+        );
+        await AsyncStorage.setItem(
+          "@gamja_info2",
+          JSON.stringify(calInfo.data[2])
+        );
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.error(e);
+        setIsLoading(false);
+      });
+  };
+
+  const gamjaRanking = () => {};
 
   return (
     <AuthContext.Provider
       value={{
+        kcalInfo,
         register,
         login,
         splashLoading,
         isLoading,
+        calInfo,
         userInfo,
         userLogin,
       }}
