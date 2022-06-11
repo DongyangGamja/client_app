@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { FlatGrid } from "react-native-super-grid";
+import React, { useState, useEffect, useContext } from "react"
+import { FlatGrid } from "react-native-super-grid"
 import {
   Text,
   View,
@@ -7,35 +7,37 @@ import {
   Image,
   StatusBar,
   Dimensions,
-} from "react-native";
+} from "react-native"
 
-import first from "../../assets/first.png";
-import second from "../../assets/second.png";
-import third from "../../assets/third.png";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../logins/AuthContext";
+import first from "../../assets/first.png"
+import second from "../../assets/second.png"
+import third from "../../assets/third.png"
+import axios from "axios"
 
-const window = Dimensions.get("window").width;
-const screen = Dimensions.get("window").height;
+const window = Dimensions.get("window").width
+const screen = Dimensions.get("window").height
 
 export default function RankingScreen({ navigation }) {
-  const [items, setItems] = useState([
-    { name: "1st. 김인후", code: "Gamja Lv.3" },
-    { name: "2nd. 문빛채운", code: "Gamja Lv.2" },
-    { name: "3rd. 강승재", code: "Gamja Lv.2" },
-    { name: "박영기", code: "Gamja Lv.2" },
-    { name: "김지원", code: "Gamja Lv.1" },
-  ]);
-  const [exp, setExp] = useState(null);
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const { kcalInfo } = useContext(AuthContext);
+  // Rank List Data
+  const getRankData = () => {
+    axios
+      .get("http://3.39.32.181:8001/api/gamja")
+      .then((res) => {
+        if (res.data.result) {
+          setItems(res.data.data)
+          setLoading(false)
+        }
+      })
+      .catch((e) => console.log(e))
+  }
+  useEffect(() => {
+    getRankData()
+  }, [])
 
-  const rank = () => {
-    const expString = AsyncStorage.getItem("@gamja_info");
-    const exp = JSON.parse(expString);
-    setExp(exp.g_exp);
-  };
-
+  if (loading) return <View></View>
   return (
     <View style={styles.container}>
       <View
@@ -88,15 +90,15 @@ export default function RankingScreen({ navigation }) {
           spacing={30}
           renderItem={({ item }) => (
             <View style={[styles.itemContainer]}>
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemCode}>{item.code}</Text>
-              <Text style={styles.itemCode}>{exp}</Text>
+              <Text style={styles.itemName}>{item.u_name}</Text>
+              <Text style={styles.itemCode}>{item.g_name}</Text>
+              <Text style={styles.itemCode}>{item.g_exp}</Text>
             </View>
           )}
         />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -136,4 +138,4 @@ const styles = StyleSheet.create({
     color: "#000",
     paddingLeft: 3,
   },
-});
+})

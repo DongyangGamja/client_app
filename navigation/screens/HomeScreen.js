@@ -1,82 +1,52 @@
-import React, { useState, useContext, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import moment from "moment";
-import "moment/locale/ko";
-import { AuthContext } from "../logins/AuthContext";
+import React, { useState, useEffect } from "react"
+import axios from "axios"
+import { Text, View, StyleSheet, Image, Dimensions } from "react-native"
+import moment from "moment"
+import "moment/locale/ko"
 
-import charGamja_baby from "../../assets/charGamja_baby.jpg";
-import charGamja_baby_sick from "../../assets/charGamja_baby_sick.jpg";
-import charGamja_baby_ssak from "../../assets/charGamja_baby_ssak.jpg";
-import charGamja_teen from "../../assets/charGamja_teen.png";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import charGamja_baby from "../../assets/charGamja_baby.jpg"
+import charGamja_teen from "../../assets/charGamja_teen.png"
+import gamjaImage from "../../assets/gamja4.png"
 
-const window = Dimensions.get("window").width;
-const screen = Dimensions.get("window").height;
+const window = Dimensions.get("window").width
+const screen = Dimensions.get("window").height
 
 export default function HomeScreen({ navigation }) {
-  const [gamjaImg, setGamjaImg] = useState(charGamja_baby);
-  const [gamjaImgName, setGamjaImgName] = useState("애기감자");
-  const [gamjaName, setGamjaName] = useState("");
-  const [gamjaExp, setGamjaExp] = useState(null);
-  const [gamjaKind, setGamjaKind] = useState(null);
-  const [gamjaKcal, setGamjaKcal] = useState(null);
-  const [gamjaDate, setGamjaDate] = useState("");
-  const [gamjaDay, setGamjaDay] = useState("");
-  const [gamjaTime, setGamjaTime] = useState("");
+  const [gamjaImg, setGamjaImg] = useState(charGamja_baby)
+  const [gamja, setGamja] = useState()
+  const [kcalList, setKcalList] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [idInfo, setIdInfo] = useState()
 
-  const { kcalInfo, calInfo } = useContext(AuthContext);
-
-  //시간 계산(불러온 날짜 데이터가 오늘보다 이전이면 초기화)
-  useEffect(() => {
-    const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
-    const nowDay = moment().format("YYYY-MM-DD");
-    if (moment(gamjaDay).isAfter(nowDay)) {
-      //초기화
-    }
-    console.log(nowTime);
-  }, []);
-
-  //exp의 양에 따라 그림 변경
-  useEffect(() => {
-    if (gamjaExp / 100 >= 3) {
-      setGamjaImg(charGamja_teen);
-      setGamjaImgName("청년감자");
-    } else if (gamjaExp / 100 >= 1) {
-      setGamjaImg(charGamja_baby);
-      setGamjaImgName("애기감자");
-    } else {
-      setGamjaImg(charGamja_baby);
-      setGamjaImgName("데이터를 불러주세요");
-    }
-  }, [gamjaExp]);
-
-  //스토리지 불러오기
-  const kcalDataHandled = async () => {
+  const getStorage = async () => {
     try {
-      const gamjaInfoString = await AsyncStorage.getItem("@gamja_info");
-      const gamjaInfo = JSON.parse(gamjaInfoString);
-      setGamjaName(gamjaInfo.g_name);
-      setGamjaExp(gamjaInfo.g_exp);
-      setGamjaKind(gamjaInfo.m_kind);
-      setGamjaKcal(gamjaInfo.m_kcal);
-      setGamjaDate(gamjaInfo.m_date);
-      //날짜와 시간으로 분리해서 저장, day=날짜, time=시간
-      const gamjaDaySet = gamjaInfo.m_date.substring(0, 10);
-      setGamjaDay(gamjaDaySet);
-      const gamjaTimeSet = gamjaInfo.m_date.substring(11, 19);
-      setGamjaTime(gamjaTimeSet);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+      const loadedData = await AsyncStorage.getItem("id")
+      setIdInfo(JSON.parse(loadedData))
+      console.log(1, idInfo)
+    } catch (e) {}
+  }
 
+  // 메인 화면 데이터 요청 기능
+  const getData = () => {
+    getStorage()
+    console.log(2, idInfo)
+    axios.get(`http://3.39.32.181:8001/api/kcal/all/admin`).then((res) => {
+      // 요청 성공
+      if (res.data.result) {
+        setKcalList(res.data.kcal) // 칼로리 데이터 저장
+        setGamja(res.data.gamja[0]) // 감자 데이터 저장
+        setLoading(false) // 데이터 저장 끝
+      }
+    })
+  }
+
+  // getData를 온마운트 될 때만 초기화
+  useEffect(() => {
+    getData()
+  }, [])
+
+  // 데이터 저장이 안 끝나면 화면 빌드 X
+  if (loading) return <View></View>
   return (
     <View style={styles.container}>
       <View
@@ -97,9 +67,7 @@ export default function HomeScreen({ navigation }) {
             style={{
               fontSize: 25,
             }}
-          >
-            {gamjaImgName}
-          </Text>
+          ></Text>
           <Text></Text>
         </View>
         <View
@@ -125,7 +93,7 @@ export default function HomeScreen({ navigation }) {
                 fontWeight: "bold",
               }}
             >
-              감자 이름: {gamjaName}
+              감자 이름: {gamja.g_name}
             </Text>
             <Text
               style={{
@@ -134,8 +102,17 @@ export default function HomeScreen({ navigation }) {
                 fontWeight: "bold",
               }}
             >
-              감자 경험치: {gamjaExp}
+              감자 경험치: {gamja.g_exp}
             </Text>
+            {/* <Text
+              style={{
+                padding: 10,
+                fontSize: 15,
+                fontWeight: "bold",
+              }}
+            >
+              음식 종류: {kcalList.m_kind}
+            </Text> */}
             <Text
               style={{
                 padding: 10,
@@ -143,26 +120,17 @@ export default function HomeScreen({ navigation }) {
                 fontWeight: "bold",
               }}
             >
-              음식 종류: {gamjaKind}
+              칼로리: {kcalList[0].m_kcal}
             </Text>
-            <Text
+            {/* <Text
               style={{
                 padding: 10,
                 fontSize: 15,
                 fontWeight: "bold",
               }}
             >
-              칼로리: {gamjaKcal}
-            </Text>
-            <Text
-              style={{
-                padding: 10,
-                fontSize: 15,
-                fontWeight: "bold",
-              }}
-            >
-              생성 날짜: {gamjaDate}
-            </Text>
+              먹은 날짜: {kcalList.m_date}
+            </Text> */}
           </View>
           <View
             style={{
@@ -170,30 +138,12 @@ export default function HomeScreen({ navigation }) {
               justifyContent: "center",
               alignItems: "center",
             }}
-          >
-            <TouchableOpacity
-              style={{ padding: 20, backgroundColor: "teal", borderRadius: 20 }}
-              onPress={() => {
-                kcalInfo();
-                kcalDataHandled();
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 15,
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-              >
-                데이터 불러오기
-              </Text>
-            </TouchableOpacity>
-          </View>
+          ></View>
         </View>
       </View>
 
       <Image
-        source={gamjaImg}
+        source={gamja}
         style={{
           width: window / 2,
           height: screen / 4,
@@ -206,7 +156,7 @@ export default function HomeScreen({ navigation }) {
         }}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -240,4 +190,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingTop: screen / 6,
   },
-});
+})

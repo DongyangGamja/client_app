@@ -1,5 +1,5 @@
 //회원가입 페이지
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react"
 import {
   View,
   Text,
@@ -8,27 +8,63 @@ import {
   ImageBackground,
   StyleSheet,
   Modal,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import axios from "axios";
-import Toast from "react-native-toast-message";
+  Image,
+} from "react-native"
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable"
+import axios from "axios"
 
-import gamjaLogo from "../../assets/LOGO.png";
-import { AuthContext } from "./AuthContext";
-import Spinner from "react-native-loading-spinner-overlay/lib";
-
+import gamjaLogo from "../../assets/LOGO.png"
+import gamja from "./../../assets/gamja4.png"
 export default function RegisterScreen({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [registerVisible, setRegisterVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false)
+  const [registerVisible, setRegisterVisible] = useState(false)
+  const [text, setText] = useState()
 
-  const [createUserPw, setCreateUserPw] = useState("");
-  const [createUserId, setCreateUserId] = useState("");
-  const [confirmUserPw, setConfirmUserPw] = useState("");
-  const [createUsername, setCreateUsername] = useState("");
+  const [createUserPw, setCreateUserPw] = useState("")
+  const [createUserId, setCreateUserId] = useState("")
+  const [confirmUserPw, setConfirmUserPw] = useState("")
+  const [createUsername, setCreateUsername] = useState("")
+  const [gamjaName, setGamjaName] = useState()
 
-  const { isLoading, register } = useContext(AuthContext);
+  const postRegister = (req, res) => {
+    if (confirmUserPw === confirmUserPw) {
+      axios({
+        method: "post",
+        url: "http://3.39.32.181:8001/api/auth/register",
+        data: {
+          id: createUserId,
+          pw: createUserPw,
+          name: createUsername,
+        },
+      }).then((res) => {
+        if (!res.data.result) {
+          setText("중복된 아이디가 있습니다.")
+          setModalVisible(true)
+        } else {
+          setRegisterVisible(true)
+        }
+      })
+    } else {
+      setText("비밀번호가 같지 않습니다.")
+      setModalVisible(true)
+    }
+  }
+
+  const postGamjaName = (req, res) => {
+    axios({
+      method: "post",
+      url: "http://3.39.32.181:8001/api/gamja",
+      data: {
+        id: createUserId,
+        name: gamjaName,
+      },
+    }).then((res) => {
+      if (res.data.result) {
+        setRegisterVisible(false)
+        navigation.navigate("Login")
+      }
+    })
+  }
 
   return (
     <ImageBackground
@@ -37,13 +73,10 @@ export default function RegisterScreen({ navigation }) {
       style={{ flex: 1, position: "relative" }}
     >
       <View style={{ flex: 1 }}>
-        <Spinner visible={isLoading} />
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Check the blank exists or pw&pwConfirm are same
-              </Text>
+              <Text style={styles.modalText}>{text}</Text>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible((current) => !current)}
@@ -60,26 +93,22 @@ export default function RegisterScreen({ navigation }) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Email : {createUserId}</Text>
-              <Text style={styles.modalText}>Password : {createUserPw}</Text>
-              <Text style={styles.modalText}>Username : {createUsername}</Text>
+              <Image
+                style={styles.gamjaImage}
+                source={gamja}
+                resizeMode="center"
+              />
+              <TextInput
+                onChangeText={setGamjaName}
+                placeholder="감자의 이름을 정하세요!"
+              />
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  register(createUsername, createUserId, createUserPw);
-                  navigation.navigate("Login");
-                  setRegisterVisible((current) => !current);
+                  gamja && postGamjaName()
                 }}
               >
-                <Text style={styles.textStyle}>Register</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setRegisterVisible((current) => !current);
-                }}
-              >
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.textStyle}>시작하기!</Text>
               </Pressable>
             </View>
           </View>
@@ -141,18 +170,7 @@ export default function RegisterScreen({ navigation }) {
               borderRadius: 50,
             }}
             onPress={() => {
-              if (
-                createUserId === "" ||
-                createUserPw === "" ||
-                confirmUserPw === "" ||
-                createUsername === ""
-              ) {
-                setModalVisible(true);
-              } else if (createUserPw !== confirmUserPw) {
-                setModalVisible(true);
-              } else {
-                setRegisterVisible(true);
-              }
+              postRegister()
             }}
           >
             <Text style={{ fontSize: 20 }}> Register </Text>
@@ -163,7 +181,7 @@ export default function RegisterScreen({ navigation }) {
         </View>
       </View>
     </ImageBackground>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -206,4 +224,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
-});
+  gamjaImage: {
+    width: 50,
+    height: 50,
+  },
+})

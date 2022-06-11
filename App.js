@@ -1,14 +1,11 @@
-import * as React from "react";
-import MainContainer from "./navigation/components/MainContainer";
-import SettingContainer from "./navigation/components/SettingContainer";
-import { AuthProvider } from "./navigation/logins/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import * as React from "react"
+import MainContainer from "./navigation/components/MainContainer"
+import SettingContainer from "./navigation/components/SettingContainer"
 
 function App() {
-  return (
-    <AuthProvider>
-      <SettingContainer />
-    </AuthProvider>
-  );
+  // AsyncStorage.removeItem("id")
+  return <SettingContainer />
 }
 
-export default App;
+export default App

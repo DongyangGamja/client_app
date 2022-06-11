@@ -1,5 +1,7 @@
 //로그인 페이지
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import axios from "axios"
 import {
   View,
   Text,
@@ -9,40 +11,60 @@ import {
   StyleSheet,
   Modal,
   Dimensions,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+} from "react-native"
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable"
+import lunchbox from "../../assets/lunchboxImage.jpg"
 
-import gamjaLogo from "../../assets/LOGO.png";
-import lunchbox from "../../assets/lunchboxImage.jpg";
-import { AuthContext } from "./AuthContext";
-import Spinner from "react-native-loading-spinner-overlay/lib";
-
-const window = Dimensions.get("window").width;
-const screen = Dimensions.get("window").height;
+const window = Dimensions.get("window").width
+const screen = Dimensions.get("window").height
 
 export default function LoginScreen({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [userId, setUserId] = useState("");
-  const [userPw, setUserPw] = useState("");
+  const [modalVisible, setModalVisible] = useState(false)
+  //ID, PW 상태 관리
+  const [userId, setUserId] = useState("")
+  const [userPw, setUserPw] = useState("")
+  const [tasks, setTasks] = useState()
 
-  const { isLoading, login, userInfo, userLogin, kcalInfo } =
-    useContext(AuthContext);
-
-  const loginCombined = () => {
-    if (userLogin) {
-      kcalInfo;
-      navigation.navigate("Main");
-      setUserId("");
-      setUserPw("");
-    } else {
-      console.log(userLogin);
-      setModalVisible(true);
+  const storeData = async (id) => {
+    try {
+      await AsyncStorage.setItem("id", JSON.stringify(id))
+    } catch (e) {
+      console.log(e)
     }
-  };
+  }
+
+  // const getData = async () => {
+  //   try {
+  //     const loadedData = await AsyncStorage.getItem("id")
+  //     setTasks(JSON.parse(loadedData) || "{}")
+  //   } catch (e) {
+  //     // error reading value
+  //   }
+  // }
+
+  // Login 기능
+  const login = () => {
+    axios({
+      url: "http://3.39.32.181:8001/api/auth/login",
+      method: "post",
+      data: {
+        id: userId,
+        pw: userPw,
+      },
+    })
+      .then(async (res) => {
+        // 로그인 성공
+        !res.data.result && setModalVisible(true)
+        storeData(res.data.info[1])
+        await navigation.navigate("Main")
+      })
+      .catch((e) => {
+        return e
+      })
+  }
 
   return (
+    //배경
     <ImageBackground
       source={lunchbox}
       resizeMode="cover"
@@ -54,7 +76,6 @@ export default function LoginScreen({ navigation }) {
         height: screen + 50,
       }}
     >
-      <Spinner visible={isLoading} />
       <View style={{ flex: 1 }}>
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
           <View style={styles.centeredView}>
@@ -171,7 +192,7 @@ export default function LoginScreen({ navigation }) {
                 elevation: 5,
               }}
               onPress={() => {
-                navigation.navigate("Register");
+                navigation.navigate("Register")
               }}
             >
               <Text style={{ fontSize: 18, color: "white" }}> Register </Text>
@@ -194,8 +215,7 @@ export default function LoginScreen({ navigation }) {
                 elevation: 5,
               }}
               onPress={() => {
-                login(userId, userPw);
-                loginCombined();
+                login()
               }}
             >
               <Text style={{ fontSize: 18 }}> Login </Text>
@@ -204,9 +224,10 @@ export default function LoginScreen({ navigation }) {
         </View>
       </View>
     </ImageBackground>
-  );
+  )
 }
 
+/* STYLES */
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
@@ -260,4 +281,4 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     fontSize: 30,
   },
-});
+})

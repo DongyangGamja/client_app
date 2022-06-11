@@ -1,56 +1,79 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   Text,
   View,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-} from "react-native";
-import Spinner from "react-native-loading-spinner-overlay/lib";
-import { AuthContext } from "../logins/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+} from "react-native"
+import axios from "axios"
 
-const window = Dimensions.get("window").width;
-const screen = Dimensions.get("window").height;
+import AsyncStorage from "@react-native-async-storage/async-storage"
+const window = Dimensions.get("window").width
+const screen = Dimensions.get("window").height
 
 export default function OptionScreen({ navigation }) {
-  const [gamjaKind, setGamjaKind] = useState(null);
-  const [gamjaKcal, setGamjaKcal] = useState(null);
-  const [gamjaDate, setGamjaDate] = useState("");
-  const [gamjaKind1, setGamjaKind1] = useState(null);
-  const [gamjaKcal1, setGamjaKcal1] = useState(null);
-  const [gamjaDate1, setGamjaDate1] = useState("");
-  const [gamjaKind2, setGamjaKind2] = useState(null);
-  const [gamjaKcal2, setGamjaKcal2] = useState(null);
-  const [gamjaDate2, setGamjaDate2] = useState("");
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState([])
+  const [idInfo, setIdInfo] = useState()
 
-  const { userInfo, logout, isLoading, kcalInfo } = useContext(AuthContext);
-
-  const kcalDataHandled = async () => {
+  //스토리지 정보 추출(ID)
+  const getStorage = async () => {
     try {
-      const gamjaInfoString = await AsyncStorage.getItem("@gamja_info");
-      const gamjaInfo = JSON.parse(gamjaInfoString);
-      setGamjaKind(gamjaInfo.m_kind);
-      setGamjaKcal(gamjaInfo.m_kcal);
-      setGamjaDate(gamjaInfo.m_date);
-      const gamjaInfoString1 = await AsyncStorage.getItem("@gamja_info1");
-      const gamjaInfo1 = JSON.parse(gamjaInfoString1);
-      setGamjaKind1(gamjaInfo1.m_kind);
-      setGamjaKcal1(gamjaInfo1.m_kcal);
-      setGamjaDate1(gamjaInfo1.m_date);
-      const gamjaInfoString2 = await AsyncStorage.getItem("@gamja_info2");
-      const gamjaInfo2 = JSON.parse(gamjaInfoString2);
-      setGamjaKind2(gamjaInfo2.m_kind);
-      setGamjaKcal2(gamjaInfo2.m_kcal);
-      setGamjaDate2(gamjaInfo2.m_date);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+      const loadedData = await AsyncStorage.getItem("id")
+      setIdInfo(JSON.parse(loadedData))
+    } catch (e) {}
+  }
 
+  const clickLogout = async () => {
+    AsyncStorage.removeItem("id")
+    setIdInfo(null)
+    await navigation.navigate("Login")
+  }
+
+  // 유저 칼로리 데이터 추출 함수
+  const getData = () => {
+    getStorage()
+    axios.get(`http://3.39.32.181:8001/api/kcal/${idInfo}`).then((res) => {
+      setItems(res.data.data)
+      setLoading(false)
+    })
+  }
+
+  useEffect(() => {
+    getData()
+  }, [items])
+
+  const changeMenu = (m) => {
+    switch (m) {
+      case 1:
+        return "사과"
+      case 2:
+        return "바나나"
+      case 3:
+        return "당근"
+    }
+  }
+
+  if (loading) return <View></View>
   return (
     <View style={styles.container}>
-      <Spinner visible={isLoading} />
+      <View>
+        <TouchableOpacity
+          style={{
+            alignItems: "center",
+            backgroundColor: "orange",
+            marginTop: 100,
+            paddingVertical: 10,
+            borderRadius: 50,
+          }}
+          onPress={() => {
+            clickLogout()
+          }}
+        >
+          <Text style={{ fontSize: 20 }}> Logout </Text>
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           flex: 2,
@@ -79,69 +102,23 @@ export default function OptionScreen({ navigation }) {
           <Text style={styles.text}>음식</Text>
           <Text style={styles.text}>열량</Text>
         </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            width: window,
-          }}
-        >
-          <Text style={styles.text}>{gamjaDate}</Text>
-          <Text style={styles.text}>{gamjaKind}</Text>
-          <Text style={styles.text}>{gamjaKcal}</Text>
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            width: window,
-          }}
-        >
-          <Text style={styles.text}>{gamjaDate1}</Text>
-          <Text style={styles.text}>{gamjaKind1}</Text>
-          <Text style={styles.text}>{gamjaKcal1}</Text>
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            width: window,
-          }}
-        >
-          <Text style={styles.text}>{gamjaDate2}</Text>
-          <Text style={styles.text}>{gamjaKind2}</Text>
-          <Text style={styles.text}>{gamjaKcal2}</Text>
-        </View>
-      </View>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "orange",
-            padding: 20,
-            borderRadius: 20,
-          }}
-          onPress={() => {
-            kcalInfo();
-            kcalDataHandled();
-          }}
-        >
-          <Text>불러오기</Text>
-        </TouchableOpacity>
+        {items.map((item) => (
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+              width: window,
+            }}
+          >
+            <Text style={styles.text}>{changeMenu(item.m_kind)}</Text>
+            <Text style={styles.text}>{item.m_kcal}</Text>
+            <Text style={styles.text}>{item.m_date}</Text>
+          </View>
+        ))}
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -153,4 +130,4 @@ const styles = StyleSheet.create({
   text: {
     padding: 20,
   },
-});
+})
