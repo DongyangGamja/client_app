@@ -40,12 +40,13 @@ export const AuthProvider = ({ children }) => {
           pw,
         })
         .then(async (res) => {
-          let userInfo = await res.data;
+          const userInfo = await res.data;
           if (userInfo.result === true) {
             AsyncStorage.setItem("@user_Name", res.data.info[0]);
             AsyncStorage.setItem("@user_Id", res.data.info[1]);
-            setUserInfo(userInfo);
-            setUserLogin(res.data.result);
+            setUserInfo(userInfo.token);
+            console.log(userInfo);
+            setUserLogin(res.data.info[1]);
           }
           setIsLoading(false);
         })

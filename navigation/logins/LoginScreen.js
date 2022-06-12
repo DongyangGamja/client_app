@@ -30,18 +30,6 @@ export default function LoginScreen({ navigation }) {
   const { isLoading, login, userInfo, userLogin, kcalInfo } =
     useContext(AuthContext);
 
-  const loginCombined = () => {
-    if (userLogin) {
-      kcalInfo;
-      navigation.navigate("Main");
-      setUserId("");
-      setUserPw("");
-    } else {
-      console.log(userLogin);
-      setModalVisible(true);
-    }
-  };
-
   return (
     <ImageBackground
       source={lunchbox}
@@ -142,7 +130,7 @@ export default function LoginScreen({ navigation }) {
               elevation: 5,
             }}
             color="white"
-            //secureTextEntry={true}
+            secureTextEntry={true}
             placeholder="Enter your password"
             placeholderTextColor="white"
             onChangeText={setUserPw}
@@ -193,9 +181,15 @@ export default function LoginScreen({ navigation }) {
                 shadowRadius: 4,
                 elevation: 5,
               }}
-              onPress={() => {
-                login(userId, userPw);
-                loginCombined();
+              onPress={async () => {
+                if (userId != "" && userPw != "") {
+                  await login(userId, userPw);
+                  if (userLogin && userInfo) {
+                    navigation.navigate("Main");
+                  } else {
+                    setModalVisible(true);
+                  }
+                }
               }}
             >
               <Text style={{ fontSize: 18 }}> Login </Text>

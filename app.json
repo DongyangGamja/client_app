@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "gamja",
+    "name": "CC",
     "slug": "gamja",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,7 +8,6 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/LOGO.png",
-      "resizeMode": "center",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -16,11 +15,14 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.gamja.caloriecalculator",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.gamja.caloriecalculator",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/LOGO.png",
         "backgroundColor": "#FFFFFF"
       }
     },

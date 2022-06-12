@@ -123,6 +123,7 @@ export default function HomeScreen({ navigation }) {
                 padding: 10,
                 fontSize: 15,
                 fontWeight: "bold",
+                marginVertical: 10,
               }}
             >
               감자 이름: {gamjaName}
@@ -132,6 +133,7 @@ export default function HomeScreen({ navigation }) {
                 padding: 10,
                 fontSize: 15,
                 fontWeight: "bold",
+                marginVertical: 10,
               }}
             >
               감자 경험치: {gamjaExp}
@@ -141,6 +143,7 @@ export default function HomeScreen({ navigation }) {
                 padding: 10,
                 fontSize: 15,
                 fontWeight: "bold",
+                marginVertical: 10,
               }}
             >
               음식 종류: {gamjaKind}
@@ -150,6 +153,7 @@ export default function HomeScreen({ navigation }) {
                 padding: 10,
                 fontSize: 15,
                 fontWeight: "bold",
+                marginVertical: 10,
               }}
             >
               칼로리: {gamjaKcal}
@@ -159,9 +163,10 @@ export default function HomeScreen({ navigation }) {
                 padding: 10,
                 fontSize: 15,
                 fontWeight: "bold",
+                marginVertical: 10,
               }}
             >
-              생성 날짜: {gamjaDate}
+              생성 날짜: {gamjaDay} {gamjaTime}
             </Text>
           </View>
           <View
