@@ -19,6 +19,7 @@ export default function FeedScreen({ navigation }) {
   useEffect(() => {
     getData()
   }, [])
+
   if (loading) return <View></View>
   return (
     <View style={styles.container}>
@@ -29,21 +30,24 @@ export default function FeedScreen({ navigation }) {
         spacing={20}
         sections={[
           {
-            title: "Title1",
+            title: "Tip",
             data: items.slice(0, 6),
+            image: "#4a8c8c",
           },
           {
-            title: "Title2",
+            title: "Recipe",
             data: items.slice(6, 12),
           },
           {
-            title: "Title3",
+            title: "Our Homepage",
             data: items.slice(12, 20),
           },
         ]}
         style={styles.gridView}
         renderItem={({ item, section, index }) => (
-          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+          <View
+            style={[styles.itemContainer, { backgroundColor: section.image }]}
+          >
             <Text style={styles.itemName}>{item.b_title}</Text>
             <Text style={styles.itemCode}>{item.u_name}</Text>
           </View>
@@ -71,7 +75,6 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     justifyContent: "flex-end",
-    borderRadius: 5,
     padding: 10,
     height: 150,
   },

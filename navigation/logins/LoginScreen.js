@@ -163,7 +163,7 @@ export default function LoginScreen({ navigation }) {
               elevation: 5,
             }}
             color="white"
-            //secureTextEntry={true}
+            secureTextEntry={true}
             placeholder="Enter your password"
             placeholderTextColor="white"
             onChangeText={setUserPw}

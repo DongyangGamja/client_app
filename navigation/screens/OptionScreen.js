@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
 } from "react-native"
 import axios from "axios"
 
@@ -58,25 +59,9 @@ export default function OptionScreen({ navigation }) {
   if (loading) return <View></View>
   return (
     <View style={styles.container}>
-      <View>
-        <TouchableOpacity
-          style={{
-            alignItems: "center",
-            backgroundColor: "orange",
-            marginTop: 100,
-            paddingVertical: 10,
-            borderRadius: 50,
-          }}
-          onPress={() => {
-            clickLogout()
-          }}
-        >
-          <Text style={{ fontSize: 20 }}> Logout </Text>
-        </TouchableOpacity>
-      </View>
       <View
         style={{
-          flex: 2,
+          flex: 0.4,
           justifyContent: "center",
           alignItems: "center",
           width: window,
@@ -90,25 +75,59 @@ export default function OptionScreen({ navigation }) {
         >
           Calorie List
         </Text>
-        <View
+      </View>
+      <View
+        style={{
+          justifyContent: "flex-start",
+          alignItems: "center",
+          flexDirection: "row",
+          width: window,
+          marginBottom: 10,
+        }}
+      >
+        <Text
           style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            width: window,
+            marginLeft: (window * 1) / 11,
+            backgroundColor: "#c3ced2",
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            borderRadius: 15,
           }}
         >
-          <Text style={styles.text}>시간</Text>
-          <Text style={styles.text}>음식</Text>
-          <Text style={styles.text}>열량</Text>
-        </View>
+          음식
+        </Text>
+        <Text
+          style={{
+            marginLeft: (window * 1) / 18,
+            backgroundColor: "#c3ced2",
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            borderRadius: 15,
+          }}
+        >
+          열량
+        </Text>
+        <Text
+          style={{
+            marginLeft: (window * 1) / 5,
+            backgroundColor: "#c3ced2",
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            borderRadius: 15,
+          }}
+        >
+          저장된 시간
+        </Text>
+      </View>
+      <ScrollView style={{ flex: 1 }}>
         {items.map((item) => (
           <View
             style={{
+              width: window,
+              flex: 1,
+              flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "row",
-              width: window,
             }}
           >
             <Text style={styles.text}>{changeMenu(item.m_kind)}</Text>
@@ -116,6 +135,21 @@ export default function OptionScreen({ navigation }) {
             <Text style={styles.text}>{item.m_date}</Text>
           </View>
         ))}
+      </ScrollView>
+      <View>
+        <TouchableOpacity
+          style={{
+            alignItems: "center",
+            backgroundColor: "orange",
+            padding: 10,
+            marginVertical: 20,
+          }}
+          onPress={() => {
+            clickLogout()
+          }}
+        >
+          <Text style={{ fontSize: 20 }}> Logout </Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -126,6 +160,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "white",
   },
   text: {
     padding: 20,

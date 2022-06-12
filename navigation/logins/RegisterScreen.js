@@ -102,14 +102,26 @@ export default function RegisterScreen({ navigation }) {
                 onChangeText={setGamjaName}
                 placeholder="감자의 이름을 정하세요!"
               />
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  gamja && postGamjaName()
+              <View
+                style={{
+                  flexDirection: "row",
                 }}
               >
-                <Text style={styles.textStyle}>시작하기!</Text>
-              </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => {
+                    gamja && postGamjaName()
+                  }}
+                >
+                  <Text style={styles.textStyle}>시작하기!</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setRegisterVisible((current) => !current)}
+                >
+                  <Text style={styles.textStyle}>취소</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </Modal>
@@ -214,6 +226,7 @@ const styles = StyleSheet.create({
   buttonClose: {
     backgroundColor: "orange",
     marginTop: 20,
+    marginHorizontal: 10,
   },
   textStyle: {
     color: "white",

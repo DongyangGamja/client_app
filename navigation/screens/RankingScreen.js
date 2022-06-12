@@ -91,8 +91,8 @@ export default function RankingScreen({ navigation }) {
           renderItem={({ item }) => (
             <View style={[styles.itemContainer]}>
               <Text style={styles.itemName}>{item.u_name}</Text>
-              <Text style={styles.itemCode}>{item.g_name}</Text>
-              <Text style={styles.itemCode}>{item.g_exp}</Text>
+              <Text style={styles.itemCode}>Gamja: {item.g_name}</Text>
+              <Text style={styles.itemCode}>Exp. {item.g_exp}</Text>
             </View>
           )}
         />
@@ -107,9 +107,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   gridView: {
-    borderRadius: 40,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
     backgroundColor: "orange",
-    marginVertical: 20,
+    marginTop: 20,
     flex: 1,
   },
   itemContainer: {
@@ -123,7 +124,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 10,
     justifyContent: "center",
-    borderRadius: 20,
     padding: 10,
     height: 80,
   },

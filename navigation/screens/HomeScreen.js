@@ -13,6 +13,7 @@ const screen = Dimensions.get("window").height
 
 export default function HomeScreen({ navigation }) {
   const [gamjaImg, setGamjaImg] = useState(charGamja_baby)
+  const [gamjaImgName, setGamjaImgName] = useState("애기 감자")
   const [gamja, setGamja] = useState()
   const [kcalList, setKcalList] = useState([])
   const [loading, setLoading] = useState(true)
@@ -38,6 +39,16 @@ export default function HomeScreen({ navigation }) {
         setLoading(false) // 데이터 저장 끝
       }
     })
+  }
+
+  const getGamjaImg = () => {
+    if (kcalList >= 200) {
+      setGamjaImg(charGamja_teen)
+      setGamjaImgName("청년감자")
+    } else {
+      setGamjaImg(charGamja_baby)
+      setGamjaImgName("애기감자")
+    }
   }
 
   // getData를 온마운트 될 때만 초기화
@@ -67,44 +78,37 @@ export default function HomeScreen({ navigation }) {
             style={{
               fontSize: 25,
             }}
-          ></Text>
+          >
+            {gamjaImgName}
+          </Text>
           <Text></Text>
         </View>
         <View
           style={{
             flex: 4,
-            flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <View
+          <Text
             style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
               padding: 10,
+              fontSize: 15,
+              fontWeight: "bold",
             }}
           >
-            <Text
-              style={{
-                padding: 10,
-                fontSize: 15,
-                fontWeight: "bold",
-              }}
-            >
-              감자 이름: {gamja.g_name}
-            </Text>
-            <Text
-              style={{
-                padding: 10,
-                fontSize: 15,
-                fontWeight: "bold",
-              }}
-            >
-              감자 경험치: {gamja.g_exp}
-            </Text>
-            {/* <Text
+            감자 이름: {gamja.g_name}
+          </Text>
+          <Text
+            style={{
+              padding: 10,
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            감자 경험치: {gamja.g_exp}
+          </Text>
+          {/* <Text
               style={{
                 padding: 10,
                 fontSize: 15,
@@ -113,16 +117,16 @@ export default function HomeScreen({ navigation }) {
             >
               음식 종류: {kcalList.m_kind}
             </Text> */}
-            <Text
-              style={{
-                padding: 10,
-                fontSize: 15,
-                fontWeight: "bold",
-              }}
-            >
-              칼로리: {kcalList[0].m_kcal}
-            </Text>
-            {/* <Text
+          <Text
+            style={{
+              padding: 10,
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            칼로리: {kcalList[0].m_kcal}
+          </Text>
+          {/* <Text
               style={{
                 padding: 10,
                 fontSize: 15,
@@ -131,19 +135,11 @@ export default function HomeScreen({ navigation }) {
             >
               먹은 날짜: {kcalList.m_date}
             </Text> */}
-          </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          ></View>
         </View>
       </View>
 
       <Image
-        source={gamja}
+        source={gamjaImg}
         style={{
           width: window / 2,
           height: screen / 4,
