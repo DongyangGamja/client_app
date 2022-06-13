@@ -54,6 +54,7 @@ export default function HomeScreen({ navigation }) {
   // getData를 온마운트 될 때만 초기화
   useEffect(() => {
     getData()
+    getGamjaImg()
   }, [])
 
   // 데이터 저장이 안 끝나면 화면 빌드 X
@@ -71,7 +72,7 @@ export default function HomeScreen({ navigation }) {
         <View
           style={{
             flex: 1,
-            top: 100,
+            top: (screen * 1) / 8,
           }}
         >
           <Text
@@ -81,7 +82,6 @@ export default function HomeScreen({ navigation }) {
           >
             {gamjaImgName}
           </Text>
-          <Text></Text>
         </View>
         <View
           style={{
