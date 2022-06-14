@@ -1,5 +1,5 @@
 //앱 실행 처음 로그인, 회원가입 선택 페이지
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   View,
   Text,
@@ -8,12 +8,12 @@ import {
   ImageBackground,
   StyleSheet,
   Dimensions,
-} from "react-native";
+} from "react-native"
 
-import gamjaLogo from "../../assets/LOGO.png";
+import gamjaLogo from "../../assets/LOGO.png"
 
-const window = Dimensions.get("window").width;
-const screen = Dimensions.get("window").height;
+const window = Dimensions.get("window").width
+const screen = Dimensions.get("window").height
 
 export default function StartScreen({ navigation }) {
   return (
@@ -47,14 +47,14 @@ export default function StartScreen({ navigation }) {
               style={{
                 backgroundColor: "black",
                 width: window / 2.5,
-                borderRadius: 20,
+                borderRadius: 10,
                 justifyContent: "center",
                 alignItems: "center",
                 height: screen / 14,
                 margin: 15,
               }}
               onPress={() => {
-                navigation.navigate("Login");
+                navigation.navigate("Login")
               }}
             >
               <Text style={{ fontSize: 20, color: "white" }}>Sign in</Text>
@@ -63,14 +63,14 @@ export default function StartScreen({ navigation }) {
               style={{
                 backgroundColor: "white",
                 width: window / 2.5,
-                borderRadius: 20,
+                borderRadius: 10,
                 justifyContent: "center",
                 alignItems: "center",
                 height: screen / 14,
                 margin: 15,
               }}
               onPress={() => {
-                navigation.navigate("Register");
+                navigation.navigate("Register")
               }}
             >
               <Text style={{ fontSize: 20, color: "black" }}>Sign up</Text>
@@ -79,7 +79,7 @@ export default function StartScreen({ navigation }) {
         </View>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -102,4 +102,4 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-});
+})

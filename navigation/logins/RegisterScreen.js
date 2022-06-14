@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Modal,
   Image,
+  Dimensions,
 } from "react-native"
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable"
 import axios from "axios"
@@ -25,6 +26,9 @@ export default function RegisterScreen({ navigation }) {
   const [confirmUserPw, setConfirmUserPw] = useState("")
   const [createUsername, setCreateUsername] = useState("")
   const [gamjaName, setGamjaName] = useState()
+
+  const window = Dimensions.get("window").width
+  const screen = Dimensions.get("window").height
 
   const postRegister = (req, res) => {
     if (confirmUserPw === confirmUserPw) {
@@ -179,7 +183,7 @@ export default function RegisterScreen({ navigation }) {
               backgroundColor: "orange",
               marginTop: 20,
               paddingVertical: 10,
-              borderRadius: 50,
+              borderRadius: 10,
             }}
             onPress={() => {
               postRegister()
@@ -204,10 +208,8 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    margin: 20,
     backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
+    borderRadius: 10,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -217,10 +219,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    paddingVertical: 40,
+    paddingHorizontal: 60,
   },
   button: {
-    borderRadius: 20,
-    padding: 10,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     elevation: 2,
   },
   buttonClose: {

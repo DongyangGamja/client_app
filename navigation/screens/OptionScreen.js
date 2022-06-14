@@ -73,7 +73,7 @@ export default function OptionScreen({ navigation }) {
             marginTop: 30,
           }}
         >
-          Calorie List
+          Calorie Log
         </Text>
       </View>
       <View

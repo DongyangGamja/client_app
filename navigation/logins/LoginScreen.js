@@ -128,7 +128,7 @@ export default function LoginScreen({ navigation }) {
               width: window / 1.2,
               backgroundColor: "black",
               opacity: 0.7,
-              borderRadius: 15,
+              borderRadius: 10,
               padding: 10,
               shadowColor: "#000",
               shadowOffset: {
@@ -150,7 +150,7 @@ export default function LoginScreen({ navigation }) {
               width: window / 1.2,
               backgroundColor: "black",
               opacity: 0.7,
-              borderRadius: 15,
+              borderRadius: 10,
               padding: 10,
               marginTop: 10,
               shadowColor: "#000",
@@ -181,7 +181,7 @@ export default function LoginScreen({ navigation }) {
                 backgroundColor: "teal",
                 marginHorizontal: 13,
                 paddingVertical: 12,
-                borderRadius: 30,
+                borderRadius: 10,
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 0,
@@ -204,7 +204,7 @@ export default function LoginScreen({ navigation }) {
                 alignItems: "center",
                 backgroundColor: "orange",
                 paddingVertical: 12,
-                borderRadius: 30,
+                borderRadius: 10,
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 0,
@@ -231,7 +231,7 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.85)",
   },
@@ -239,8 +239,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
-    borderTopLeftRadius: 80,
-    borderTopRightRadius: 80,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -250,11 +248,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: window,
+    width: (window * 1) / 1.2,
     height: screen / 3.5,
+    borderRadius: 10,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
     shadowColor: "#000",
@@ -279,6 +278,6 @@ const styles = StyleSheet.create({
   },
   modalText: {
     paddingVertical: 30,
-    fontSize: 30,
+    fontSize: 20,
   },
 })
